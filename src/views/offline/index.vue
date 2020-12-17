@@ -10,7 +10,8 @@ import Tile from 'ol/layer/Tile';
 import XYZ from 'ol/source/XYZ';
 import TileGrid from 'ol/tilegrid/TileGrid';
 import TileImage from 'ol/source/TileImage';
-import { Projection, addProjection, addCoordinateTransforms, transform } from 'ol/proj';
+import { Projection, addProjection, addCoordinateTransforms, transform, transformExtent } from 'ol/proj';
+import { applyTransform } from 'ol/extent';
 import projzh from 'projzh';
 
 export default {
@@ -21,10 +22,12 @@ export default {
   },
   methods: {
     mapInit() {
-      var bd09Extent = [-20037726.37, -12474104.17, 20037726.37, 12474104.17];
+      var _bd09Extent = [-20037726.37, -12474104.17, 20037726.37, 12474104.17];
+      var bd09Extent = [72.004, 0.8293, 137.8347, 55.8271];
       var baiduMercator = new Projection({
         code: 'baidu',
-        extent: bd09Extent,
+        extent: applyTransform(bd09Extent, projzh.ll2bmerc),
+        // extent: transformExtent(bd09Extent, 'EPSG:4326', 'baidu'),
         units: 'm'
       });
       addProjection(baiduMercator);
@@ -53,19 +56,27 @@ export default {
             var index = hash % urls.length;
             index = index < 0 ? index + urls.length : index;
             if (x < 0) {
-              x = 'M' + -x;
+              x = -x;
             }
             if (y < 0) {
-              y = 'M' + -y;
+              y = -y;
             }
-            return urls[index]
-              .replace('{x}', x)
-              .replace('{y}', y)
-              .replace('{z}', z);
+            return './baiduTile/' + z + '/' + x + '/' + y + '.png';
           },
+          // tileUrlFunction: function(tileCoord) {
+          //   var x = tileCoord[1];
+          //   var y = tileCoord[2] - 1;
+          //   var z = tileCoord[0];
+          //   if (x < 0) {
+          //     x = -x;
+          //   }
+          //   return './whiteTile/' + z + '/' + x + '/' + y + '.png';
+          // },
           tileGrid: new TileGrid({
             resolutions: bmercResolutions,
-            origin: [0, 0]
+            origin: [0, 0],
+            extent: transformExtent(bd09Extent, 'EPSG:4326', 'baidu'),
+            tileSize: [256, 256]
           }),
           tilePixelRatio: 2
         })
@@ -74,12 +85,14 @@ export default {
         target: this.$refs.map,
         layers: [baidu],
         view: new View({
-          center: transform([121.51, 31.55], 'EPSG:4326', 'baidu'),
+          center: transform([113.92, 31.5], 'EPSG:4326', 'baidu'),
           zoom: 1,
           projection: 'baidu',
-          extent: bd09Extent,
           constrainResolution: true
         })
+      });
+      map.on('click', evt => {
+        const coord = transform(evt.coordinate, 'baidu', 'EPSG:4326');
       });
     }
   }
