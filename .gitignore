@@ -2,7 +2,12 @@
 node_modules
 /dist
 baiduTile
+baidu_other
 whiteTile
+tdtTile
+gugeTile
+byTile
+gaodeTile
 
 # local env files
 .env.local

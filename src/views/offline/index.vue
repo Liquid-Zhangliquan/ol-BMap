@@ -65,7 +65,7 @@ export default {
           },
           // tileUrlFunction: function(tileCoord) {
           //   var x = tileCoord[1];
-          //   var y = tileCoord[2] - 1;
+          //   var y = tileCoord[2];
           //   var z = tileCoord[0];
           //   if (x < 0) {
           //     x = -x;
