@@ -82,6 +82,12 @@ export default {
           constrainResolution: true
         })
       });
+      map.on('click', evt => {
+        console.log(evt);
+        const { coordinate } = evt;
+        const cord = transform(coordinate, 'baidu', 'EPSG:4326');
+        console.log(cord);
+      });
     }
   }
 };

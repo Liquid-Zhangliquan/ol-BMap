@@ -3,11 +3,11 @@ module.exports = {
   devServer: {
     port: 8095,
     proxy: {
-      '/gaodejpg': {
+      '/offlineMap': {
         target: 'http://localhost:5000/',
         changeOrigin: true,
         pathRewrite: {
-          '^/gaodejpg': ''
+          '^/offlineMap': ''
         }
       },
     }

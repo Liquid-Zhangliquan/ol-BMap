@@ -24,7 +24,8 @@ export default {
     mapInit() {
       var tdtLayer = new Tile({
         source: new XYZ({
-          url: '/gaodejpg/{z}/{x}/{y}.jpg'
+          url: '/gaodeTile/{z}/{x}/{y}.jpg'
+          // url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}'
         })
       });
       var map = new Map({

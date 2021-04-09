@@ -24,7 +24,8 @@ export default {
     mapInit() {
       var tdtLayer = new Tile({
         source: new XYZ({
-          url: '/byTile/{z}/{x}/{y}.jpg'
+          // url: '/byTile/{z}/{x}/{y}.jpg'
+          url: '/offlineMap/biyingmap/{z}/{x}/{y}.jpg'
         })
       });
       var map = new Map({
@@ -33,6 +34,7 @@ export default {
         view: new View({
           center: [114.31850613286223, 30.588751658054058],
           zoom: 10,
+          maxZoom: 18,
           projection: 'EPSG:4326',
           constrainResolution: true
         })
